@@ -1,0 +1,10 @@
+.inputBusqueda{
+    height: max-content;
+    display: inline-block;
+}
+.botonAgregar{
+    display: inline-block;
+}
+#formularioBusqueda{
+    height: 60px;
+}

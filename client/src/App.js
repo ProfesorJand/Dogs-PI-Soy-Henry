@@ -1,10 +1,20 @@
-import './App.css';
+import React from "react";
+import { Route } from "react-router-dom";
+import Home from "./components/Home.jsx";
+import LandingPage from "./components/LandingPage.jsx"
+import NavBar from "./components/NavBar"
+
 
 function App() {
+
+
   return (
-    <div className="App">
-      <h1>Henry Dogs</h1>
-    </div>
+    <>
+    
+    <Route exact path="/" component={LandingPage} />
+    <NavBar/>
+    <Route exact path="/home" component={Home} />
+    </>
   );
 }
 
