@@ -1,0 +1,23 @@
+.Contenedor{
+    min-height: 500px;
+    max-height: auto;
+    max-width: 350px;
+    width: 30%;
+    
+    background-color: grey;
+    display:inline-block;
+    position: relative;
+    margin: 30px;
+    padding: 10px;
+    text-align: center;
+}
+
+.ImgDog{
+    display: block;
+    position:relative;
+    left:auto;
+    right: auto;
+    max-width:300px;
+    width: 100%;
+    height: auto;
+}

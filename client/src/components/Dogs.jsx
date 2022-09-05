@@ -1,10 +1,31 @@
 import React from "react";
 import Dog from "./Dog.jsx"
 
-export default function Dogs(){
+export default function Dogs({data}){
+
     return (
         <>
-        <Dog/>
+        {!data ? <p>Error en conexion</p> : 
+        data.map((d)=>{ return (
+            <>
+            <Dog
+                key={d.id}
+                bred_for={d.bred_for}
+                breed_group={d.breed_group}
+                height={d.height}
+                id={d.id}
+                image={d.image}
+                life_span={d.life_span}
+                name={d.name}
+                origin={d.origin}
+                reference_image_id={d.reference_image_id}
+                temperament={d.temperament}
+                weight={d.weight}
+                country_code={d.country_code}
+                />
+            </>)}
+        )}
+        
         </>
     )
 }

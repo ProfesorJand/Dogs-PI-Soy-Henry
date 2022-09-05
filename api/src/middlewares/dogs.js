@@ -31,6 +31,10 @@ router.get('/',async(req,res)=>{
     
 });
 
+router.get('/razas',async(req,res)=>{
+    //conectarme a la base de datos y obtener todas las razas
+})
+
 router.get('/:idRaza',async (req,res)=>{
     //Obtener el detalle de una raza de perro en particular
     const {idRaza} = req.params;
