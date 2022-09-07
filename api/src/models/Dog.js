@@ -5,6 +5,14 @@ module.exports = (sequelize) => {
   // defino el modelo
   sequelize.define('dog', {
     //id se crea automatico
+    id:{
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      set(value){
+        this.setDataValue("id", value + 200)
+      }
+    },
     name: { //Name *
       type: DataTypes.STRING,
       allowNull: false,

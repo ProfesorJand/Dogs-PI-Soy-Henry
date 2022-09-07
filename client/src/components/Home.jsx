@@ -28,15 +28,14 @@ export default function Home() {
     const [valueFilter, setValueFilter] = useState("");
     const [buleano, setBuleano] = useState(true); // condicion verdadero o falso
     const [currentPage, setCurrentPage] = useState(1);
-    const [dataCurrentPage, setDataCurrentPage] = useState([]);
+    //const [dataCurrentPage, setDataCurrentPage] = useState([]);
     const [totalPage, setTotalPage] = useState(0); // cantidad total de paginacion
     const [maxShow, setMaxShow] = useState(10); // cantidad max a mostrar por paginacion
     const [arrayPag, setArrayPag] = useState([]) // cantidad de paginacion inputs
 
-    useEffect(async ()=>{
-        await fetch('http://localhost:3001/dogs').then(r=>r.json()).then(all=>{setDogs([...all])})
+    useEffect(()=>{
+        fetch('http://localhost:3001/dogs').then(r=>r.json()).then(all=>{setDogs([...all])})
         
-        // max();
     },[])
 
     useEffect(()=>{
@@ -45,25 +44,20 @@ export default function Home() {
     },[dogs])
 
     useEffect(()=>{
-        if(!buleano){
-            // max();
-            // mostrarPerrosPag(currentPage)
-        }
-    },[filter])
-
-    useEffect(()=>{
         onFilter(valueFilter)
     },[currentPage])
 
     useEffect(()=>{
-        setArrayPag([])
+        setArrayPag([]) //restablecer el array para que se cree de nuevo
         for(let i = 1; i <= totalPage; i++){
             setArrayPag((e)=>[...new Set([...e,i])])
         }
-        //max();
     },[totalPage])
 
     function onFilter(breed, buleano = false, pag = currentPage){
+        //tener la base de datos con los breeds para realizar un condicional para verificar si existe ese breed
+        //en caso de que no exista setear buleano en false con setBulueano
+
         setBreed(breed);
         if(buleano){
             setCurrentPage(1);
@@ -107,7 +101,7 @@ export default function Home() {
             const sorteado = array.sort(function(a, b) {
                 console.log(a[arg])
                 var x = a[arg]; var y = b[arg];
-                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+                return ((x < y) ? -1 : ((x > y) ? 1 : (x === undefined) ? 1 : 0));
                 
             });
             setDogs([].concat(sorteado)) // hago esto para que surta efecto el useState
@@ -116,7 +110,7 @@ export default function Home() {
                 console.log(a[arg])
                 var x = a[arg] ? a[arg]: ""; var y = b[arg] ? b[arg]: "";
                 
-                return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+                return ((x > y) ? -1 : ((x < y) ? 1 : (x === undefined) ? 1 : (y === undefined) ? 1 : 0));
             });
             setDogs([].concat(sorteado)) // hago esto para que surta efecto el useState
         }
@@ -146,6 +140,7 @@ export default function Home() {
             <Dogs data={filter}/>
             </>
         }
+        
         </>
     )
 }
