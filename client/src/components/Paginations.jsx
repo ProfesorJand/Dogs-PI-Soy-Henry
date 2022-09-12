@@ -8,7 +8,7 @@ export default function Pagination({max,arrayPag, setCurrentPage, currentPage, t
         <input
             key={a}
             id={"paginadoNum"+a}
-            className={window.location.hash === `#${a}` ? "active" : `#${a}`}
+            className={window.location.hash === `#${a}` ? "active" : `#${a}`} 
             type="button"
             onClick={(e)=>todo(e)}
             value={a}

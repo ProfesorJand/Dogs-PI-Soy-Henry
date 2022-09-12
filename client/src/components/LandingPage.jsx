@@ -5,6 +5,7 @@ import React from 'react';
 
 export default function LandingPage(){
     return (
+        <>
         <div className="cover">
             <div className="LandingA">
                 <h1>Henry Dogs</h1>
@@ -13,5 +14,6 @@ export default function LandingPage(){
                 </a>
             </div>      
         </div>
+        </>
     )
 }

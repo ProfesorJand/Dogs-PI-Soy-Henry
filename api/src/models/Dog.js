@@ -8,26 +8,30 @@ module.exports = (sequelize) => {
     id:{
       type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
-      set(value){
-        this.setDataValue("id", value + 200)
-      }
+      unique: true,
+      allowNull: false,
+      // set(value){
+      //   let i = 203;
+        
+      //   this.setDataValue('id', value + i )  // no me funciona
+      // }
     },
     name: { //Name *
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     height: { // Altura *
-      type: DataTypes.FLOAT,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     weight: { // Peso *
-      type: DataTypes.FLOAT,
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    years_of_life: { // Años de Vida
-      type: DataTypes.INTEGER,
+    life_span: { // Años de Vida
+      type: DataTypes.STRING,
       allowNull: true,
     },
-  });
+  }, { initialAutoIncrement: 200});
 };
