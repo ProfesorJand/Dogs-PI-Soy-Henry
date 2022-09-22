@@ -41,23 +41,30 @@ export default function Pagination({max,arrayPag, setCurrentPage, currentPage, t
             <form id="formularioPaginacion" onSubmit={(e) => {
                 e.preventDefault();
             }}>
-                <input
+                {
+                    arrayPag.length !== 0 &&
+                    <input
                     id="PrevPag"
                     className="PrevPag" 
                     type="button"
                     value="PrevPag"
                     onClick={(e)=>todo(e)}
-                />
-                {arrayPag.length === 0 ? <p>Cargando Paginado...</p>: arrayPag.map((a)=>{
+                    />
+                }
+                
+                {
+                arrayPag.length !== 0 && arrayPag.map((a)=>{
                     return (pag(a))
-                })}
-                <input
+                })
+                }
+                {arrayPag.length !== 0 &&
+                    <input
                     id="NextPag"
                     className="NextPag"
                     type="button"
                     value="NextPag"
                     onClick={(e)=>todo(e)}
-                />
+                />}
             </form>
         </>
     )

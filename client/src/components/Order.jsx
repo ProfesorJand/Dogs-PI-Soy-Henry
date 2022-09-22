@@ -1,25 +1,34 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import "./css/Order.css"
 
 export default function OrderBar({onOrder, valueOrder}) {
   const [order, setOrder] = useState("name");
-  const [tipo, setTipo] = useState("Z-A");
+  const [tipo, setTipo] = useState("A-Z");
 
-  function handler(arg = tipo){
-    setTipo(arg)
+  useEffect(()=>{
+    handler()
+  },[tipo, order])
+
+  function handler(){
     var select = document.getElementById('inputOrder');
     var option = select.options[select.selectedIndex].value;
-    setOrder(option);
     onOrder(option, tipo);
   }
 
-  function toggler(e){
+  function funcion1(e){
+    setOrder(e.target.value)
+  }
+
+  function funcion2(e){
+   
     if(e.target.value === "A-Z"){
-      handler("Z-A");
+      e.target.value = "Z-A"
+      setTipo(e.target.value)
     }else{
-      handler("A-Z");
+      e.target.value = "A-Z"
+      setTipo(e.target.value)
     }
-    
   }
 
   function seleccion(e){
@@ -30,22 +39,14 @@ export default function OrderBar({onOrder, valueOrder}) {
 
   return (
     <div>
-
-
-      
-
-
-    <div>
-      <label>OrderBy</label>
-      <select name="inputOrder" id="inputOrder" onChange={()=>handler()}>
-      <option value="All">All</option>
+      <label>OrderBy </label>
+      <select name="inputOrder" id="inputOrder" onChange={(e)=>funcion1(e)}>
         {valueOrder?.map((e)=>{
           return seleccion(e)
         })}
       </select>
-      <input type="button"  value={tipo} onClick={(e)=>toggler(e)}/>
+      <input type="button"  value={tipo} onClick={(e)=>funcion2(e)}/>
     </div>
 
-  </div>
   );
 }

@@ -1,10 +1,16 @@
 .inputBusqueda{
     height: max-content;
     display: inline-block;
+
 }
 .botonAgregar{
     display: inline-block;
 }
 #formularioBusqueda{
     height: 60px;
+}
+
+.btnBusqueda {
+    background-color:burlywood;
+    padding: 0px 5px;
 }

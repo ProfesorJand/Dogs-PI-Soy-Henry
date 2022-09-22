@@ -1,0 +1,10 @@
+.ContainerDogs {
+    display:flex;
+    position:relative;
+    /* left: auto;
+    right: auto; */
+    margin: auto;
+    text-align: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}

@@ -1,21 +1,25 @@
 import React, { useState } from "react";
+import {Link} from "react-router-dom"
 import "./css/SearchBar.css"
 
 export default function SearchBar({onSearch}) {
-  const [city, setCity] = useState("");
+  const [dogName, setDogName] = useState("");
+  function busqueda(){
+    
+  }
+
   return (
     <form id="formularioBusqueda" onSubmit={(e) => {
       e.preventDefault();
-      onSearch(city);
     }}>
       <input
         className="inputBusqueda"
         type="text"
-        placeholder="Breed..."
-        value={city}
-        onChange={e => setCity(e.target.value)}
+        placeholder="Search Dog By Name..."
+        value={dogName}
+        onChange={e => setDogName(e.target.value)}
       />
-      <input className="botonAgregar" type="submit" value="Search" />
+      {dogName && <Link className ="btnBusqueda" to={`/perfil/${dogName}`}>Search</Link>}
     </form>
   );
 }

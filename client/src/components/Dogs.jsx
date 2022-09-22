@@ -1,11 +1,17 @@
 import React from "react";
-import Dog from "./Dog.jsx"
+import {Link} from "react-router-dom"
+import Dog from "./Dog.jsx";
+import "./css/Dogs.css";
 
 export default function Dogs({data}){
-
+    console.log(data)
     return (
         <>
-        {!data ? <p>Error en conexion</p> : 
+        <div className="ContainerDogs">
+        {data.length === 0 ? 
+        <>
+       </>
+        : 
         data.map((d)=>{ return (
             <>
             <Dog
@@ -19,13 +25,14 @@ export default function Dogs({data}){
                 name={d.name}
                 origin={d.origin}
                 reference_image_id={d.reference_image_id}
-                temperament={d.temperament}
+                temperament={d.temperament ? d.temperament : d.Temperaments ? d.Temperaments.map((t)=>t.name).join(", "): d.temperament}
                 weight={d.weight}
                 country_code={d.country_code}
+
                 />
             </>)}
         )}
-        
+        </div>
         </>
     )
 }

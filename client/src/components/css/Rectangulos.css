@@ -1,0 +1,23 @@
+.blueBox{
+    background-color: blue;
+    color:white;
+    border: 1px solid gold;
+    padding: 1px 5px;
+    margin: 3px 3px;
+}
+
+.redBox{
+    background-color: rgb(145, 2, 2);
+    color:white;
+    border: 1px solid white;
+    padding: 1px 5px;
+    margin: 3px 3px;
+}
+
+.greenBox{
+    background-color: rgb(0, 82, 0);
+    color:white;
+    border: 1px solid white;
+    padding: 1px 5px;
+    margin: 3px 3px;
+}

@@ -19,7 +19,8 @@ import Dogs from './Dogs.jsx';
 import FilterBreedGroup from './FilterBreedGroup';
 import Order from './Order.jsx'
 import Pagination from './Paginations.jsx';
-import FilterTemperamentos from './FilterTemperament.jsx'
+import FilterTemperamentos from './FilterTemperament.jsx';
+import "./css/Home.css";
 // import Logo from '../../logoHenry.png'
 
 export default function Home() {
@@ -39,9 +40,6 @@ export default function Home() {
     const [maxShow, setMaxShow] = useState(8); // cantidad max a mostrar por paginacion
     const [arrayPag, setArrayPag] = useState([]); // cantidad de paginacion inputs
     
-    
-    
-
     useEffect(()=>{
         fetch('http://localhost:3001/dogs').then(r=>r.json()).then(all=>{setDogs([...all])}) //backend
         fetch('http://localhost:3001/temperaments').then(r=> r.json()).then(r=>setTemperamentos(r))
@@ -87,6 +85,10 @@ export default function Home() {
                     if(d.temperament){
                         return d.temperament.includes(filterTemperament); 
                     }
+                    if(d.Temperaments){
+                        console.log("AAAAAAAAAAAAAAAAAAAA")
+                        return d.Temperaments.map((t)=>t.name).join(", ").includes(filterTemperament)
+                    }
                 });
                 const totalPage = Math.ceil(filtrado.length / maxShow);  
                 setTotalPage(totalPage);
@@ -110,6 +112,10 @@ export default function Home() {
                 const filtrado = dogs.filter((d)=>{
                     if(d.temperament && d.breed_group){
                         return d.temperament.includes(filterTemperament) && d.breed_group.toLowerCase() === breed.toLowerCase(); 
+                    }
+                    if(d.Temperaments && d.breed_group){
+                        console.log("AAAAAAAAAAAAAAAAAAAA")
+                        return d.Temperaments.map((t)=>t.name).join(", ").includes(filterTemperament) && d.breed_group.toLowerCase() === breed.toLowerCase();
                     }
                 });
                 const totalPage = Math.ceil(filtrado.length / maxShow);  
@@ -136,16 +142,12 @@ export default function Home() {
     
 
     function onOrder( arg, cambio , array = dogs ){ //arg = name //[{name: "nombre"}]
-        console.log("order by: ", arg)
-        console.log("Cambio: ", cambio)
-
         if(!arg){
             return 
         }
         arg = arg.toLowerCase();
         if(cambio === "A-Z"){
             const sorteado = array.sort(function(a, b) {
-                console.log(a[arg])
                 var x = a[arg]; var y = b[arg];
                 if(arg === "weight"){
                     var x = Number(a[arg]["imperial"].split(" - ")[0])? Number(a[arg]["imperial"].split(" - ")[0]):15;
@@ -157,7 +159,6 @@ export default function Home() {
             setDogs([].concat(sorteado)) // hago esto para que surta efecto el useState
         }else{
             const sorteado = array.sort(function(a, b) {
-                console.log(a[arg])
                 var x = a[arg] ? a[arg]: ""; var y = b[arg] ? b[arg]: "";
                 if(arg === "weight"){
                     var x = Number(a[arg]["imperial"].split(" - ")[0])? Number(a[arg]["imperial"].split(" - ")[0]):15;
@@ -172,12 +173,20 @@ export default function Home() {
    
     return (
         <>
-        <FilterBreedGroup onFilter={onFilter} razas={razas} valueTemperament={valueTemperament}/>
-        <FilterTemperamentos onFilter={onFilter} temperamentos={temperamentos} breed={breedName}/>
-        <Order onOrder={onOrder} valueOrder={valueOrder}/>
-        <Pagination arrayPag={arrayPag} setCurrentPage={setCurrentPage} currentPage={currentPage} totalPage={totalPage}/>
-        {filter.length ===0 ? <p>BREED NOT FOUND, please insert another Breed in the filter</p>:
+        
+        {dogs.length === 0 ?
+            
+            <div className='ContainerDogs'>
+            <img src="https://cdn.dribbble.com/users/1782673/screenshots/4683964/ezgif.com-video-to-gif__2_.gif" alt="Cargando"/>
+            </div>
+            :
             <>
+            <div className="ContainerFiltOrderPag">
+            <FilterBreedGroup onFilter={onFilter} razas={razas} valueTemperament={valueTemperament}/>
+            <FilterTemperamentos onFilter={onFilter} temperamentos={temperamentos} breed={breedName}/>
+            <Order onOrder={onOrder} valueOrder={valueOrder}/>
+            <Pagination arrayPag={arrayPag} setCurrentPage={setCurrentPage} currentPage={currentPage} totalPage={totalPage}/>
+            </div>
             <Dogs data={filter}/>
             </>
         }

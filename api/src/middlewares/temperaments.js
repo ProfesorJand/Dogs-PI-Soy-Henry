@@ -10,13 +10,16 @@ const router = Router();
 
 const ApiBreeds = `https://api.thedogapi.com/v1/breeds?api_key=`+process.env.API_KEY;
 
-let ArrayDataTemperaments = [];
-let i = 0;
+
+
 
 router.get('/',async(req,res)=>{
+    var ArrayDataTemperaments = [];
+    var i = 0;
     //Obtener todos los temperamentos posibles
     //En una primera instancia deberán obtenerlos desde la API externa y guardarlos en su propia base de datos y luego ya utilizarlos desde allí
     const razas = await fetch(ApiBreeds).then(r => r.json())
+    
     const temperament = razas.map((r) => {
         if(r.temperament){
             const a = r.temperament.split(", "); 
@@ -30,11 +33,16 @@ router.get('/',async(req,res)=>{
         return { id: i++, name: e} // establecerlos con los mismos nombres que estan en el modelo Temperament
     })
     try {
-        const temperamentos = await Temperament.bulkCreate(ArrayObjTemperament)
-        if(temperamentos){
+        const temperamentos = await Temperament.findAll();
+        if(temperamentos.length !==0){
             return res.json(temperamentos)
+        }
+        const crearTemperamentos = await Temperament.bulkCreate(ArrayObjTemperament)
+        if(crearTemperamentos){
+            return res.json(crearTemperamentos)
         } 
-        throw new Error("Hubo un error en creacion de algun registro a la base de datos")
+        // throw new Error("Hubo un error en creacion de algun registro a la base de datos")
+        
     } catch (error) {
         res.send({error: error.message})
     }

@@ -1,22 +1,133 @@
 .Contenedor{
     min-height: 500px;
     max-height: auto;
-    max-width: 350px;
+    max-width: 400px;
     width: 30%;
     background-color: grey;
-    display:inline-block;
+    display: flex;
+    flex-wrap: wrap;
     position: relative;
     margin: 30px;
     padding: 10px;
+    justify-content: flex-start;
     text-align: center;
+    box-shadow: 5px 5px 8px blue, 10px 10px 8px red, 15px 15px 8px green;
+    border-radius: 25px;
+    align-content: center;
+    flex-direction: column;
+    cursor: pointer;
 }
 
-.ImgDog{
-    display: block;
-    position:relative;
+/* .ContenedorFondo{
+    
+  background-image: url("https://cdn2.thedogapi.com/images/BJa4kxc4X.jpg");
+  
+ 
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+
+  height: 100%; 
+  
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+} */
+
+.Contenedor img{
+    display: inline-block;
+    position:relative ;
     left:auto;
     right: auto;
-    max-width:300px;
-    width: 100%;
-    height: auto;
+    /* max-width:300px; */
+    width: 90%;
+    height: 250px;
+    object-fit:cover;
+    border: 2px solid red;
+    overflow:scroll;
+    border-radius: 25px 25px 0px 0px;
 }
+
+.ContenedorTexto{
+    width: 90%;
+    background-color: #626262;
+    border: 2px solid red;
+    border-radius: 0px 0px 25px 25px;
+}
+
+.ContenedorTexto h2,  .ContenedorTexto h3{
+    margin: 5px 0px
+}
+
+.ContenedorTexto p{
+    padding: 0px 15px;
+    text-align: left;
+    width: 90%;
+}
+
+.temperamentDiv{
+    
+    padding: 10px;
+    
+}
+
+.temperamentList{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: relative;
+    justify-content: center;
+}
+
+.breedGroup{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: relative;
+    justify-content: center;
+}
+
+
+thead th:nth-child(2), thead th:nth-child(3){
+    background-color: #aa7e04;
+    color: white;
+}
+
+thead td:nth-child(1), thead td:nth-child(3){
+    background-color: #6d3636;
+    color: white;
+}
+
+thead td:nth-child(2), thead td:nth-child(4){
+    background-color: #438a55;
+    color: white;
+}
+
+tbody td:nth-child(1), thead td:nth-child(6){
+    background-color:#aa7e04;
+    color: white;
+}
+tbody td:nth-child(2), tbody td:nth-child(4){
+    background-color: #6d3636;
+    color: white;
+}
+tbody td:nth-child(3), tbody td:nth-child(5){
+    background-color: #438a55;
+    color: white;
+}
+/* table tr:first-child th:nth-child(2) th:nth-child(3){
+    background-color: #04AA6D;
+    color: white;
+} */
+
+
+/* table, th, td{
+    border: 1px solid black;
+
+    padding: 2px;
+} */
+table{
+    width: 95%;
+    position: relative;
+    margin:auto
+}
+
