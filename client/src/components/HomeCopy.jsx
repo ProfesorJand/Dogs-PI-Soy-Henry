@@ -44,6 +44,7 @@ export default function Home() {
         fetch('http://localhost:3001/dogs').then(r=>r.json()).then(all=>{setDogs([...all])}) //backend
         fetch('http://localhost:3001/temperaments').then(r=> r.json()).then(r=>setTemperamentos(r))
         fetch('http://localhost:3001/dogs/razas').then(r=> r.json()).then(r=>setRazas(r))
+        fetch('http://localhost:3001/temperaments').then(r=> r.json())
         
     },[])
 
@@ -142,6 +143,7 @@ export default function Home() {
     
 
     function onOrder( arg, cambio , array = dogs ){ //arg = name //[{name: "nombre"}]
+        console.log(arg)
         if(!arg){
             return 
         }
@@ -150,8 +152,8 @@ export default function Home() {
             const sorteado = array.sort(function(a, b) {
                 var x = a[arg]; var y = b[arg];
                 if(arg === "weight"){
-                    var x = Number(a[arg]["imperial"].split(" - ")[0])? Number(a[arg]["imperial"].split(" - ")[0]):15;
-                    var y = Number(b[arg]["imperial"].split(" - ")[0])? Number(b[arg]["imperial"].split(" - ")[0]):15;
+                    var x = Number(a[arg].split(" - ")[0])? Number(a[arg].split(" - ")[0]):15;
+                    var y = Number(b[arg].split(" - ")[0])? Number(b[arg].split(" - ")[0]):15;
                 }
                 return ((x < y) ? -1 : ((x > y) ? 1 : (x === undefined) ? 1 : 0)); //verificar si es necesario x = undifned con el cambio del filtro temperament y breed_gruop
                 
@@ -161,8 +163,8 @@ export default function Home() {
             const sorteado = array.sort(function(a, b) {
                 var x = a[arg] ? a[arg]: ""; var y = b[arg] ? b[arg]: "";
                 if(arg === "weight"){
-                    var x = Number(a[arg]["imperial"].split(" - ")[0])? Number(a[arg]["imperial"].split(" - ")[0]):15;
-                    var y = Number(b[arg]["imperial"].split(" - ")[0])? Number(b[arg]["imperial"].split(" - ")[0]):15;
+                    var x = Number(a[arg].split(" - ")[0])? Number(a[arg].split(" - ")[0]):15;
+                    var y = Number(b[arg].split(" - ")[0])? Number(b[arg].split(" - ")[0]):15;
                 }
                 return ((x > y) ? -1 : ((x < y) ? 1 : (x === undefined) ? 1 : (y === undefined) ? 1 : 0)); //verificar si es necesario y = undifned con el cambio del filtro temperament y breed_gruop
             });
@@ -182,7 +184,7 @@ export default function Home() {
             :
             <>
             <div className="ContainerFiltOrderPag">
-            <FilterBreedGroup onFilter={onFilter} razas={razas} valueTemperament={valueTemperament}/>
+            {/* <FilterBreedGroup onFilter={onFilter} razas={razas} valueTemperament={valueTemperament}/> */}
             <FilterTemperamentos onFilter={onFilter} temperamentos={temperamentos} breed={breedName}/>
             <Order onOrder={onOrder} valueOrder={valueOrder}/>
             <Pagination arrayPag={arrayPag} setCurrentPage={setCurrentPage} currentPage={currentPage} totalPage={totalPage}/>

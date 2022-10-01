@@ -1,0 +1,26 @@
+.ContainerCreator {
+    width: 50%;
+    padding: 20px;
+    background-color: bisque;
+    display: block;
+    margin: 30px auto 100px auto;
+}
+
+select, option {
+    width: 250px;
+}
+  
+option {
+    overflow: hidden;
+    white-space: no-wrap;
+    text-overflow: ellipsis;
+}
+
+div .Contenedor{
+    margin: 20px auto;
+    width: auto;
+}
+
+h1{
+    text-align: center;
+}

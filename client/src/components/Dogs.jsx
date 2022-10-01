@@ -16,7 +16,7 @@ export default function Dogs({data}){
             <>
             <Dog
                 key={d.id}
-                bred_for={d.bred_for}
+                bred_for={d.bred_for ? d.bred_for : d.Bred_Fors ? d.Bred_Fors.map((b)=>b.name).join(", "): d.bred_for}
                 breed_group={d.breed_group}
                 height={d.height}
                 id={d.id}

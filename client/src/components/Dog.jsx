@@ -3,8 +3,10 @@ import {Link} from "react-router-dom"
 import Rectangulos from "./Rectangulos";
 import "./css/Dog.css"
 
-export default function Dog({id, bred_for, breed_group, height, image, life_span, name, origin, reference_image_id, temperament, weight, country_code}){
-    console.log("temperamento",temperament)
+export default function Dog({id, bred_for, breed_group, height, image, life_span, name, origin, reference_image_id, temperament, weight, country_code, perfil=false}){
+    console.log("life_span",life_span);
+    
+
     return (
         <>
 
@@ -12,7 +14,13 @@ export default function Dog({id, bred_for, breed_group, height, image, life_span
                 !id? <p key={id}>Cargandoaaaaaaaa</p>:
                 <>
                 
-            <div key={id} className="Contenedor" onClick={() => window.location.href=`/perfil/${name}`} > 
+            <div key={id} className={`Contenedor ${window.location.href === `/perfil/${encodeURI(name)}` ? "Perfil": encodeURI(name)}`} onClick={
+                () => {
+                    console.log(window.location.href)
+                    if (window.location.href !== `http://localhost:3001/perfil/${name}`){
+                        return window.location.href=`/perfil/${name}`
+                    }
+                    }} > 
             
                 <img className="ImgDog" src={image} alt={"Img"+name}/>
                 <div className="ContenedorFondo"></div>
@@ -20,41 +28,56 @@ export default function Dog({id, bred_for, breed_group, height, image, life_span
                 <div className="ContenedorTexto"> 
                 
                 <h2>{name}</h2>
+                {perfil && life_span && <h3>Life Span {life_span}</h3>}
 
                 <div className="ContenedorMinTexto">
-                <table className="tablaPesoAltura">
+                {(weight.split(" - ")[0] || height.split(" - ")[0]) &&  
+                    <table className="tablaPesoAltura">
                 <thead>
                 <tr>
                     <th rowSpan="2"></th>
                     <th colSpan="2">Weight</th>
-                    <th colSpan="2">Height</th>
+                    {perfil && <th colSpan="2">Height</th>}
                 </tr>
                 
                 <tr>
                     <td colSpan="1">min</td>
                     <td colSpan="1">max</td>
-                    <td colSpan="1">min</td>
-                    <td colSpan="1">max</td>
+                    {perfil && <td colSpan="1">min</td>}
+                    {perfil && <td colSpan="1">max</td>}
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td>Imperial</td>
-                    <td>{Math.round(weight.split(" - ")[0] * 0.39)}</td>
-                    <td>{Math.round(weight.split(" - ")[1] ? weight.split(" - ")[1] * 0.39 : weight.split(" - ")[0] * 0.39)} </td>
-                    <td>{Math.round(height.split(" - ")[0] * 0.39)}</td>
+                    {weight.split(" - ")[0] && 
+                    <>
+                    <td>{Math.round(Number(weight.split(" - ")[0]) * 0.39)}</td>
+                    <td>{Math.round(weight.split(" - ")[1] ? Number(weight.split(" - ")[1]) * 0.39 : Number(weight.split(" - ")[0]) * 0.39)} </td>
+                    </>
+                    }
+                    {perfil && height.split(" - ")[0] && 
+                    <><td>{Math.round(height.split(" - ")[0] * 0.39)}</td>
                     <td>{Math.round(height.split(" - ")[1] ? height.split(" - ")[1] * 0.39 : height.split(" - ")[0] * 0.39)}</td>
+                    </>
+                    }
                 </tr>
                 <tr>
                     <td>Metrics</td>
-                    <td>{Math.round(weight.split(" - ")[0])}</td>
+                    {weight.split(" - ")[0] && 
+                    <><td>{Math.round(weight.split(" - ")[0])}</td>
                     <td>{Math.round(weight.split(" - ")[1] ? weight.split(" - ")[1]: weight.split(" - ")[0])}</td>
-                    <td>{Math.round(height.split(" - ")[0])}</td>
+                    </>
+                    }
+                    {perfil && height.split(" - ")[0] && 
+                    <><td>{Math.round(height.split(" - ")[0])}</td>
                     <td>{Math.round(height.split(" - ")[1] ? height.split(" - ")[1]: height.split(" - ")[0])}</td>
+                    </>
+                    }
                 </tr>
                 </tbody>
-                </table>
-                {bred_for &&
+                </table>}
+                {perfil && bred_for &&
                 <>
                 <div className="temperamentDiv">
                 <h3>Bred for</h3>
@@ -69,7 +92,7 @@ export default function Dog({id, bred_for, breed_group, height, image, life_span
                 </>
                 
                }
-                {breed_group &&
+                {perfil && breed_group &&
                 <>
                 <div className="temperamentDiv">
                 <h3>Breed group</h3>

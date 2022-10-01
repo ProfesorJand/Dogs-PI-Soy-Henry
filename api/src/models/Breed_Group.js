@@ -3,7 +3,7 @@ const { DataTypes } = require('sequelize');
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
   // defino el modelo
-  sequelize.define('Temperament', {
+  sequelize.define('Breed_Group', {
     //id se crea automatico
     id:{
       type: DataTypes.INTEGER,

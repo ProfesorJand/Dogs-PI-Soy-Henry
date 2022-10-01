@@ -18,6 +18,10 @@
     cursor: pointer;
 }
 
+.Perfil{
+    cursor:default;
+}
+
 /* .ContenedorFondo{
     
   background-image: url("https://cdn2.thedogapi.com/images/BJa4kxc4X.jpg");
@@ -130,4 +134,6 @@ table{
     position: relative;
     margin:auto
 }
+
+
 
