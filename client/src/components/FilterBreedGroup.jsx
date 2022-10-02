@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./css/Filter.css"
 
 export default function Filter({onFilter, razas, valueTemperament}) {
-
+  console.log("razasassasasas",razas)
   function handler(){
     var select = document.getElementById('razas');
     var option = select.options[select.selectedIndex].value;
@@ -20,7 +20,7 @@ export default function Filter({onFilter, razas, valueTemperament}) {
       <select name="razas" id="razas" onChange={()=>handler()}>
         <option value="All">All</option>
         {razas?.map((e)=>{
-          return seleccion(e)
+          return seleccion(e.name)
         })}
       </select>
     </div>

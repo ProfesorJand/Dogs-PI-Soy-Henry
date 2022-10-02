@@ -48,6 +48,27 @@ export default function PerfilDog({props}){
 
         <div className="ContainerDogs">
         {
+            data.length > 1 &&
+            data?.map((result)=>{
+                return (
+                    
+                        <Dog 
+                        key={result.id}
+                        perfil={false} 
+                        id={result.id} 
+                        bred_for={result.bred_for ? result.bred_for : result.Bred_Fors ? result.Bred_Fors.map((t)=>t.name).join(", "): ""} 
+                        breed_group={result.breed_group ? result.breed_group : result.Breed_Groups ? result.Breed_Groups.map((t)=>t.name).join(", ") : ""} 
+                        weight={result.weight} 
+                        height={result.height} 
+                        temperament={result.temperament ? result.temperament : result.Temperaments ? result.Temperaments.map((t)=>t.name).join(", "): ""} 
+                        name={result.name} 
+                        image={result.image} 
+                        life_span={result.life_span}/>    
+                )
+            })   
+        }
+        {
+            data.length === 1 &&
             data?.map((result)=>{
                 return (
                     
@@ -62,11 +83,9 @@ export default function PerfilDog({props}){
                         temperament={result.temperament ? result.temperament : result.Temperaments ? result.Temperaments.map((t)=>t.name).join(", "): ""} 
                         name={result.name} 
                         image={result.image} 
-                        life_span={result.life_span}/>
-                    
+                        life_span={result.life_span}/>    
                 )
-            })
-            
+            })   
         }
         </div>
         

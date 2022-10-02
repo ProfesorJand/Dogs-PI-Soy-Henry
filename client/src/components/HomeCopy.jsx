@@ -43,7 +43,7 @@ export default function Home() {
     useEffect(()=>{
         fetch('http://localhost:3001/dogs').then(r=>r.json()).then(all=>{setDogs([...all])}) //backend
         fetch('http://localhost:3001/temperaments').then(r=> r.json()).then(r=>setTemperamentos(r))
-        fetch('http://localhost:3001/dogs/razas').then(r=> r.json()).then(r=>setRazas(r))
+        fetch('http://localhost:3001/breed_group').then(r=> r.json()).then(r=>setRazas(r))
         fetch('http://localhost:3001/temperaments').then(r=> r.json())
         
     },[])
@@ -184,7 +184,7 @@ export default function Home() {
             :
             <>
             <div className="ContainerFiltOrderPag">
-            {/* <FilterBreedGroup onFilter={onFilter} razas={razas} valueTemperament={valueTemperament}/> */}
+            <FilterBreedGroup onFilter={onFilter} razas={razas} valueTemperament={valueTemperament}/>
             <FilterTemperamentos onFilter={onFilter} temperamentos={temperamentos} breed={breedName}/>
             <Order onOrder={onOrder} valueOrder={valueOrder}/>
             <Pagination arrayPag={arrayPag} setCurrentPage={setCurrentPage} currentPage={currentPage} totalPage={totalPage}/>
