@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React from "react";
 import "./css/Filter.css"
 
 export default function FilterTemperamentos({onFilter, temperamentos, breed}) {

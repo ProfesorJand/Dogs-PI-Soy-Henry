@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from "react";
 import { useEffect } from "react";
 import "./css/Order.css"
@@ -7,14 +8,15 @@ export default function OrderBar({onOrder, valueOrder}) {
   const [tipo, setTipo] = useState("A-Z");
 
   useEffect(()=>{
-    handler()
+    const handler = ()=>{
+      var select = document.getElementById('inputOrder');
+      var option = select.options[select.selectedIndex].value;
+      onOrder(option, tipo);
+    }
+    handler();
   },[tipo, order])
 
-  function handler(){
-    var select = document.getElementById('inputOrder');
-    var option = select.options[select.selectedIndex].value;
-    onOrder(option, tipo);
-  }
+ 
 
   function funcion1(e){
     setOrder(e.target.value)

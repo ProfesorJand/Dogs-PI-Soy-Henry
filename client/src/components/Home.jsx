@@ -1,3 +1,4 @@
+/* eslint-disable */
 /*[ ] Input de búsqueda para encontrar razas de perros por nombre
 [ ] Área donde se verá el listado de razas de perros. Deberá mostrar su:
 Imagen
@@ -19,38 +20,42 @@ import Dogs from './Dogs.jsx';
 import FilterBreedGroup from './FilterBreedGroup';
 import Order from './Order.jsx'
 import Pagination from './Paginations.jsx';
-import FilterTemperamentos from './FilterTemperament.jsx'
+import FilterTemperamentos from './FilterTemperament.jsx';
+import "./css/Home.css";
 // import Logo from '../../logoHenry.png'
 
 export default function Home() {
     const [dogs, setDogs] = useState([]); // api de dogs... peticion al backend
+    const [razas, setRazas] = useState([]); // Grupos de Razas
+    const [temperamentos, setTemperamentos] = useState([]); // temperamentos del backend
+
     const [filter, setFilter] = useState([]); // data filtrado x input value
-    const [breed, setBreed] = useState("all"); // data filtrado2 x input value para el order
-    const [valueFilter, setValueFilter] = useState("");
+    const [breedName, setBreed] = useState("all"); // data filtrado2 x input value para el order
+    const [valueTemperament, setValueTemperament] = useState("all");
+    const [valueOrder, setValueOrder] = useState(["Name", "Weight"]);
+
     const [buleano, setBuleano] = useState(true); // condicion verdadero o falso
     const [currentPage, setCurrentPage] = useState(1);
     //const [dataCurrentPage, setDataCurrentPage] = useState([]);
     const [totalPage, setTotalPage] = useState(0); // cantidad total de paginacion
     const [maxShow, setMaxShow] = useState(8); // cantidad max a mostrar por paginacion
     const [arrayPag, setArrayPag] = useState([]); // cantidad de paginacion inputs
-    const [temperamentos, setTemperamentos] = useState([]); // temperamentos del backend
-    const [razas, setRazas] = useState([]); // Grupos de Razas
     
-
     useEffect(()=>{
         fetch('http://localhost:3001/dogs').then(r=>r.json()).then(all=>{setDogs([...all])}) //backend
         fetch('http://localhost:3001/temperaments').then(r=> r.json()).then(r=>setTemperamentos(r))
-        fetch('http://localhost:3001/dogs/razas').then(r=> r.json()).then(r=>setRazas(r))
+        fetch('http://localhost:3001/breed_group').then(r=> r.json()).then(r=>setRazas(r))
+        fetch('http://localhost:3001/temperaments').then(r=> r.json())
         
     },[])
 
     useEffect(()=>{
         setFilter(dogs);
-        onFilter(breed);
+        onFilter(breedName, true, 1, valueTemperament);
     },[dogs])
 
     useEffect(()=>{
-        onFilter(valueFilter)
+        onFilter(breedName, false, currentPage, valueTemperament)
     },[currentPage])
 
     useEffect(()=>{
@@ -60,81 +65,97 @@ export default function Home() {
         }
     },[totalPage])
 
-    function onFilter(breed, buleano = false, pag = currentPage, option = "all"){
+    function onFilter(breed = "all", buleano = false, pag = currentPage, filterTemperament = "all"){ //option
         //tener la base de datos con los breeds para realizar un condicional para verificar si existe ese breed
         //en caso de que no exista setear buleano en false con setBulueano
-        console.log(breed)
+
         setBreed(breed);
+        setValueTemperament(filterTemperament);
+        
         if(buleano){
             setCurrentPage(1);
             window.location.hash = "#1"
         }
-        console.log("otro filtrado")
-        setValueFilter(breed) // 
+         
         if(breed.toLowerCase() === "all" || !breed){
-            console.log("traer todos los dogs sin paginado")
-            const totalPage = Math.ceil(dogs.length / maxShow);
-            setTotalPage(totalPage);
-            const otroFiltrado = [].concat(dogs).splice((pag * maxShow) - maxShow, maxShow);
-            
-            return setFilter(otroFiltrado);
-        }
-        if(temperamentos.find(e =>e.name === breed)){
-            
-            const filtrado = dogs.filter((d)=>{
-                console.log(d)
-                if(d.Temperaments){
-                    console.log("AAAAAAAAAAAAAAAAAAAA")
-                    return d.Temperaments.map((t)=>t.name).join(", ").includes(breed)
+            if(filterTemperament.toLowerCase() !== "all"){
+                if(temperamentos.find(e =>e.name === filterTemperament)){
+                const filtrado = dogs.filter((d)=>{
+                    if(d.temperament){
+                        return d.temperament.includes(filterTemperament); 
+                    }
+                    if(d.Temperaments){
+                        console.log("AAAAAAAAAAAAAAAAAAAA")
+                        return d.Temperaments.map((t)=>t.name).join(", ").includes(filterTemperament)
+                    }
+                });
+                const totalPage = Math.ceil(filtrado.length / maxShow);  
+                setTotalPage(totalPage);
+                const otroFiltrado = [].concat(filtrado).splice((pag * maxShow) - maxShow, maxShow); 
+                return setFilter(otroFiltrado);
                 }
-                if(d.temperament){
-                    return d.temperament.includes(breed); 
-                }
-                
-            });
-            const totalPage = Math.ceil(filtrado.length / maxShow);  
-            setTotalPage(totalPage);
-            const otroFiltrado = [].concat(filtrado).splice((pag * maxShow) - maxShow, maxShow); 
-            console.log("otroFiltrado ::", otroFiltrado)
-            setFilter(otroFiltrado);
+            }else{
+                const totalPage = Math.ceil(dogs.length / maxShow);
+                setTotalPage(totalPage);
+                const otroFiltrado = [].concat(dogs).splice((pag * maxShow) - maxShow, maxShow);
+                return setFilter(otroFiltrado);
+            }
+
         }else{
-            const filtrado = dogs.filter((d)=>{
-                // falta filtrar por temperamento 
-                if(d.breed_group){ // filtrar por breed_group
-                    return d.breed_group.toLowerCase() === breed.toLowerCase(); 
-                } 
-            });
-            const totalPage = Math.ceil(filtrado.length / maxShow); // 10 / 8 , 
-            setTotalPage(totalPage);
-            const otroFiltrado = [].concat(filtrado).splice((pag * maxShow) - maxShow, maxShow); // 2 * 8 = 16 - 8  (8, 8 )
-            setFilter(otroFiltrado);
+            if(filterTemperament.toLowerCase() !== "all"){
+                if(temperamentos.find(e =>e.name === filterTemperament)){
+                const filtrado = dogs.filter((d)=>{
+                    if(d.temperament && d.breed_group){
+                        return d.temperament.includes(filterTemperament) && d.breed_group.toLowerCase() === breed.toLowerCase(); 
+                    }
+                    if(d.Temperaments && d.breed_group){
+                        return d.Temperaments.map((t)=>t.name).join(", ").includes(filterTemperament) && d.breed_group.toLowerCase() === breed.toLowerCase();
+                    }
+                });
+                const totalPage = Math.ceil(filtrado.length / maxShow);  
+                setTotalPage(totalPage);
+                const otroFiltrado = [].concat(filtrado).splice((pag * maxShow) - maxShow, maxShow); 
+                return setFilter(otroFiltrado);
+                }
+            }else{
+                const filtrado = dogs.filter((d)=>{
+                    if(d.breed_group){
+                        return d.breed_group.toLowerCase() === breed.toLowerCase(); 
+                    }
+                })
+                const totalPage = Math.ceil(filtrado.length / maxShow);
+                setTotalPage(totalPage);
+                const otroFiltrado = [].concat(filtrado).splice((pag * maxShow) - maxShow, maxShow);
+                return setFilter(otroFiltrado);
+            }
         }
-        
-
-        
-
-       
     }
 
+    
+
     function onOrder( arg, cambio , array = dogs ){ //arg = name //[{name: "nombre"}]
-        console.log(arg)
         if(!arg){
             return 
         }
-
+        arg = arg.toLowerCase();
         if(cambio === "A-Z"){
             const sorteado = array.sort(function(a, b) {
-                console.log(a[arg])
                 var x = a[arg]; var y = b[arg];
+                if(arg === "weight"){
+                    var x = Number(a[arg].split(" - ")[0])? Number(a[arg].split(" - ")[0]):15;
+                    var y = Number(b[arg].split(" - ")[0])? Number(b[arg].split(" - ")[0]):15;
+                }
                 return ((x < y) ? -1 : ((x > y) ? 1 : (x === undefined) ? 1 : 0)); //verificar si es necesario x = undifned con el cambio del filtro temperament y breed_gruop
                 
             });
             setDogs([].concat(sorteado)) // hago esto para que surta efecto el useState
         }else{
             const sorteado = array.sort(function(a, b) {
-                console.log(a[arg])
                 var x = a[arg] ? a[arg]: ""; var y = b[arg] ? b[arg]: "";
-                
+                if(arg === "weight"){
+                    var x = Number(a[arg].split(" - ")[0])? Number(a[arg].split(" - ")[0]):15;
+                    var y = Number(b[arg].split(" - ")[0])? Number(b[arg].split(" - ")[0]):15;
+                }
                 return ((x > y) ? -1 : ((x < y) ? 1 : (x === undefined) ? 1 : (y === undefined) ? 1 : 0)); //verificar si es necesario y = undifned con el cambio del filtro temperament y breed_gruop
             });
             setDogs([].concat(sorteado)) // hago esto para que surta efecto el useState
@@ -144,11 +165,24 @@ export default function Home() {
    
     return (
         <>
-        <FilterBreedGroup onFilter={onFilter} razas={razas}/>
-        <FilterTemperamentos onFilter={onFilter} temperamentos={temperamentos}/>
-        <Order onOrder={onOrder}/>
-        <Pagination arrayPag={arrayPag} setCurrentPage={setCurrentPage} currentPage={currentPage} totalPage={totalPage}/>
-        <Dogs data={filter}/>
+        
+        {dogs.length === 0 ?
+            
+            <div className='ContainerDogs'>
+            <img src="https://cdn.dribbble.com/users/1782673/screenshots/4683964/ezgif.com-video-to-gif__2_.gif" alt="Cargando"/>
+            </div>
+            :
+            <>
+            <div className="ContainerFiltOrderPag">
+            <FilterBreedGroup onFilter={onFilter} razas={razas} valueTemperament={valueTemperament}/>
+            <FilterTemperamentos onFilter={onFilter} temperamentos={temperamentos} breed={breedName}/>
+            <Order onOrder={onOrder} valueOrder={valueOrder}/>
+            <Pagination arrayPag={arrayPag} setCurrentPage={setCurrentPage} currentPage={currentPage} totalPage={totalPage}/>
+            </div>
+            <Dogs data={filter}/>
+            </>
+        }
+        
         </>
     )
 }

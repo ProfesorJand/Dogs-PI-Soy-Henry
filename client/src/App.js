@@ -1,7 +1,6 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import Home from "./components/Home.jsx";
-import HomeCopy from "./components/HomeCopy.jsx";
 import LandingPage from "./components/LandingPage.jsx";
 import NavBar from "./components/NavBar";
 import CreateDog from "./components/CreateDog.jsx";
@@ -16,7 +15,7 @@ function App() {
     
     <Route exact path="/" component={LandingPage} />
     <NavBar/>
-    <Route exact path="/home" component={HomeCopy} />
+    <Route exact path="/home" component={Home} />
     <Route exact path="/createdog" component={CreateDog} />
     <Route exact path="/perfil/:dogName" component={PerfilDog} />
     </>

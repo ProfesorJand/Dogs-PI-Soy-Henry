@@ -1,9 +1,25 @@
+.CreateDogContainer{
+    width: 90%;
+    display: flex;
+    position: relative;
+    margin: auto;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+}
+
+.CreateDogInfo{
+    width: 48%;
+    display: inline-block;
+}
+
 .ContainerCreator {
-    width: 50%;
+    width: 48%;
     padding: 20px;
-    background-color: bisque;
-    display: block;
+    background-color: #f7d2a5;
+    display: inline-block;
     margin: 30px auto 100px auto;
+    position:relative;
 }
 
 select, option {
@@ -24,3 +40,27 @@ div .Contenedor{
 h1{
     text-align: center;
 }
+
+.Error{
+    color:red;
+    background-color: black;
+}
+
+.InputError{
+    box-shadow: 0 0 30px #CC0000; margin: 10px;
+    border-color: #CC0000;
+}
+
+.Selecciones {
+    background-color: aqua;
+    margin: 5px 10px;
+    padding: 5px;
+    border: 3px solid black;
+    font-weight: 500;
+}
+
+.Selecciones input{
+    background-color: rgb(183, 183, 183);
+    margin: 5px 3px 5px 5px
+}
+

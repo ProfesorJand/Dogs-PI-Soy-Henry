@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import "./css/Filter.css"
 
 export default function Filter({onFilter, razas, valueTemperament}) {
-  console.log("razasassasasas",razas)
+
   function handler(){
     var select = document.getElementById('razas');
     var option = select.options[select.selectedIndex].value;

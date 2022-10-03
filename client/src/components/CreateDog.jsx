@@ -1,6 +1,6 @@
+/* eslint-disable */
 import React, {useState} from "react";
 import { useEffect } from "react";
-import Rectangulos from "./Rectangulos";
 import Dog from "./Dog";
 import "./css/CreateDog.css"
 
@@ -13,7 +13,15 @@ export default function CreateDog(){
     const [breedGroup, setBreedGroup] = useState([]);
     const [valueBG, setValueBG] = useState("");
     const [arrayB, setArrayB] = useState([]);
-    const [arrayT, setArrayT]= useState([])
+    const [arrayT, setArrayT]= useState([]);
+    const [error, setError] = useState({});
+    const isNullUndefEmptyStr = Object.values(error).every(value => {
+      if (value === '') {
+        return true;
+      }
+      return false;
+    });
+
     const [data, setData] = useState({
       name: "",
       bred_for: arrayB.join(", "),
@@ -50,18 +58,100 @@ export default function CreateDog(){
     },[valueBG])
    
     function handler(e){
-      setData((data)=>({...data, [e.target.name] : e.target.value }))
-    }
-
-    function handlerBreds(e){
-      
-      if (!arrayB.includes(e.target.value)){
-
-        setArrayB((r)=>[...r, e.target.value])
+      const inputName = e.target.name;
+      const inputValue = e.target.value;
+      setData((data)=>({...data, [inputName] : inputValue }));
+      if(inputName === "name" ) {
+        if(!(/[^0-9\.\,\"\?\!\;\:\#\$\%\&\(\)\*\+\-\/\<\>\=\@\[\]\\\^\_\{\}\|\~]/.test(inputValue)) || inputValue.length > 40){
+          return setError((err)=>({...err, name:"Primera letra Mayuscula de cada palabra, maximo 40 caracteres, no utlizar caracteres especiales"}))
+        }
+        const arr = inputValue.split(" ");
+        for (var i = 0; i < arr.length; i++){
+          arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+        }
+        const capitalize = arr.join(" ");
+        setData((data)=>({...data, [inputName] : capitalize }));
+        return setError((err)=>({...err, name:""}))
+      }
+      if(inputName === "life_spanMin"){
+        if( !(/(^[1-9]{1,1}(\d{0,2}?)$)/.test(inputValue)) ){
+          return setError((err)=>({...err, life_span:"Numero Entero Positivos, no se acepta 0 y maximo 3 digitos",life_spanMin:"error"}))
+        }
+        if(Number(inputValue) > Number(data.life_spanMax)){
+          return setError((err)=>({...err, life_span:"Life Span Minimun is higher than Life Span Maximun",life_spanMin:"error"}))
+        }
+        return setError((err)=>({...err, life_span:"",life_spanMax:"",life_spanMin:""}))
+      }
+      if(inputName === "life_spanMax"){
+        if(!(/(^[1-9]{1,1}(\d{0,2}?)$)/.test(inputValue)) ){
+          return setError((err)=>({...err, life_span:"Numero Entero Positivos, no se acepta 0, maximo 3 digitos y debe ser mayor o igual minimo",life_spanMax:"error"}))
+        }
+        if(Number(data.life_spanMin) > Number(inputValue) ){
+          return setError((err)=>({...err, life_span:"Life Span Minimun is higher than Life Span Maximun",life_spanMax:"error"}))
+        }
+        return setError((err)=>({...err, life_span:"",life_spanMax:"",life_spanMin:""}))
+      }
+      if(inputName === "heightMin"){
+        if( !(/(^[1-9]{1,1}(\d{0,2}?)$)/.test(inputValue)) ){
+          return setError((err)=>({...err, height:"Numero Entero Positivos, no se acepta 0 y maximo 3 digitos", heightMin:"error"}))
+        }
+        if(Number(inputValue) > Number(data.heightMax)){
+          return setError((err)=>({...err, height:"Height Minimun is higher than Height Maximun", heightMin:"error"}))
+        }
+        return setError((err)=>({...err, height:"", heightMin:"", heightMax:""}))
+      }
+      if(inputName === "heightMax"){
+        if( !(/(^[1-9]{1,1}(\d{0,2}?)$)/.test(inputValue)) ){
+          return setError((err)=>({...err, height:"Numero Entero Positivos, no se acepta 0 y debe ser mayor o igual minimo", heightMax:"error"}))
+        }
+        if(Number(data.heightMin) > Number(inputValue)){
+          return setError((err)=>({...err, height:"Height Minimun is higher than Height Maximun", heightMax:"error"}))
+        }
+        return setError((err)=>({...err, height:"", heightMax:"", heightMin:""}))
+      }
+      if(inputName === "weightMin" ){
+        if( !(/(^[1-9]{1,1}(\d{0,2}?)$)/.test(inputValue)) ){
+          return setError((err)=>({...err, weight:"Numero Entero Positivos, no se acepta 0 y maximo 3 digitos", weightMin:"error"}))
+        }
+        if(Number(inputValue) > Number(data.weightMax)){
+          return setError((err)=>({...err, weight:"Weight Minimun is higher than Weight Maximun", weightMin:"error"}))
+        }
+        return setError((err)=>({...err, weight:"", weightMax:"", weightMin:""}))
+      }
+      if(inputName === "weightMax"){
+        if( !(/(^[1-9]{1,1}(\d{0,2}?)$)/.test(inputValue)) ){
+          return setError((err)=>({...err, weight:"Numero Entero Positivos, no se acepta 0 y debe ser mayor o igual minimo", weightMax:"error"}))
+        }
+        if( Number(data.weightMin) > Number(inputValue)) {
+          return setError((err)=>({...err, weight:"Numero Entero Positivos, no se acepta 0", weightMax:"error"}))
+        }
+        return setError((err)=>({...err, weight:"", weightMax:"", weightMin:""}))
         
+      }
+      if(inputName === "image"){
+        function testImage(URL) {
+          var tester=new Image();
+          tester.onload=imageFound;
+          tester.onerror=imageNotFound;
+          tester.src=URL;
+      }
+      function imageFound() {
+          alert('That image is found and loaded');
+          return setError((err)=>({...err, image:""}))
+      }
+      function imageNotFound() {
+          alert('That image was not found.');
+          return setError((err)=>({...err, image:"That image was not found."}))
+      }
+      testImage(inputValue);
       }
     }
 
+    function handlerBreds(e){   
+      if (!arrayB.includes(e.target.value)){
+        setArrayB((r)=>[...r, e.target.value])
+      }
+    }
 
     function elimarBreds(t){
       setArrayB((valores)=>{
@@ -69,36 +159,27 @@ export default function CreateDog(){
           return bred !== t
         })
       })
-      
       return setData((data)=>({...data, bred_for : arrayB.join(", ")}))
     }
 
     function handlerTemperaments(e){
-      
       if (!arrayT.includes(e.target.value)){
-
-        setArrayT((r)=>[...r, e.target.value])
-        
+        setArrayT((r)=>[...r, e.target.value]) 
       }
     }
-
 
     function elimarTemperamento(t){
       setArrayT((valores)=>{
         return valores.filter((tempe)=>{
           return tempe !== t
         })
-      })
-      
+      })  
       return setData((data)=>({...data, temperaments : arrayT.join(", ")}))
     }
 
-    function handlerBreedGroup(e){
-      
+    function handlerBreedGroup(e){ 
       if (!valueBG.includes(e.target.value)){
-
         setValueBG(e.target.value)
-        
       }
     }
 
@@ -108,8 +189,7 @@ export default function CreateDog(){
         method: "POST",
       });
       setConstante(valor);
-      console.log("Bred", valor, "Created Succesfully");
-      
+      console.log("Bred", valor, "Created Succesfully"); 
     }
 
     function agregarTempBD(){
@@ -118,8 +198,7 @@ export default function CreateDog(){
         method: "POST",
       });
       setConstante(valor);
-      console.log("Temperament", valor, "Created Succesfully");
-      
+      console.log("Temperament", valor, "Created Succesfully");  
     }
 
     function agregarBreedGroupBD(){
@@ -128,14 +207,19 @@ export default function CreateDog(){
         method: "POST",
       });
       setConstante(valor);
-      console.log("Breed Group", valor, "Created Succesfully");
-      
+      console.log("Breed Group", valor, "Created Succesfully"); 
     }
     
-    async function mandarInfo(e){
-      console.log("mandar array",arrayB.join(", "))
-      console.log(JSON.stringify(data));
-      fetch("http://localhost:3001/temperaments")
+    async function mandarInfo(){ 
+      const isNullUndefEmptyStr = Object.values(error).every(value => {
+        // 👇️ check for multiple conditions
+        if (value === null || value === undefined || value === '') {
+          return true;
+        }
+        return false;
+      });
+      if(isNullUndefEmptyStr){
+        fetch("http://localhost:3001/temperaments")
       .then(()=>
         fetch("http://localhost:3001/bred_for"))
       .then(()=>
@@ -166,11 +250,14 @@ export default function CreateDog(){
           setArrayB([]);
           setArrayT([]);
           alert("Breed Created Succesfully");
-          
-
         })
-      )  
+      ) 
+      }
+      alert("You have 1 or more errors in the data you wanna create please change where is indicated");
+       
     }
+
+   
     
     return (
       <>
@@ -178,6 +265,7 @@ export default function CreateDog(){
         temperamentos.length !==0 && breedGroup.length !==0 && bred.length !==0 &&
         <>
         <h1>Create Dog</h1>
+        <div className="CreateDogContainer">
         <div className="ContainerCreator">
         <form action="http://localhost:3001/dogs" method="post" onSubmit={(e)=>{
             mandarInfo(e);
@@ -186,23 +274,30 @@ export default function CreateDog(){
             
         }}>
             <label for="image">Image URL: </label>
-            <input type={"text"} value={data.image} name="image" id="image" onChange={(e)=>handler(e)}/><br/>
+            <input type={"text"} value={data.image} name="image" id="image" onChange={(e)=>handler(e)} className={error.image?"InputError":""} required autofocus/><br/>
+            {error.image && <><label className="Error">{error.image}</label><br/></>}
+            <br/>
             <label for="name">Name: </label>
-            <input type="text" value={data.name} name="name" id="name" pattern="^[A-Z]+[a-z]{1,25}" title="Primera letra Mayusculas; demas letras minusculas; Maximo de Caracteres (25); No se aceptan numeros; No se aceptan caracteres especiales" onChange={(e)=>handler(e)} required autofocus/><br/>
+            <input type="text" value={data.name} name="name" id="name" onChange={(e)=>handler(e)} className={error.name?"InputError":""} required /><br/>
+            {error.name && <><label className="Error">{error.name}</label><br/></>}
+            <br/>
             <label for="height" >Height minimun: </label>
-            <input type="number" value={data.heightMin} name="heightMin" pattern="^[1-9]{0,5}[0-9]{0,1}[^.][^,]" min="1" title="Debe contener 2 decimales (0,22), No debe tener puntos (.); El decimal debe ser una coma (,); Si tiene mas de 2 digitos el primero no debe ser un cero (0)" width="10" onChange={(e)=>handler(e)} required/>
+            <input type="number" value={data.heightMin} name="heightMin" width="10" onChange={(e)=>handler(e)} className={error.heightMin?"InputError":""} required/><br/>
             <label for="height" >Height maximun: </label>
-            <input type="number" value={data.heightMax} name="heightMax" pattern="^[1-9]{0,5}[0-9]{0,1}[^.][^,]" min={Number(data.heightMin)} title="Debe contener 2 decimales (0,22), No debe tener puntos (.); El decimal debe ser una coma (,); Si tiene mas de 2 digitos el primero no debe ser un cero (0)" width="10" onChange={(e)=>handler(e)} required/><br/>
+            <input type="number" value={data.heightMax} name="heightMax" width="10" onChange={(e)=>handler(e)} className={error.heightMax?"InputError":""} required/><br/>
+            {error.height && <><label className="Error">{error.height}</label><br/></>}
+            <br/>
             <label for="weight">Weight minimun: </label>
-            <input type="number"value={data.weightMin} name="weightMin" pattern="^[1-9]{0,5}[0-9]{0,1}[^.][^,]" min="1" title="Debe ser un Numero Entero y no puede ser 0" onChange={(e)=>handler(e)} required/>
+            <input type="number"value={data.weightMin} name="weightMin" onChange={(e)=>handler(e)} className={error.weightMin?"InputError":""} required/><br/>
             <label for="weight">Weight maximun: </label>
-            <input type="number" value={data.weightMax} name="weightMax" pattern="^[1-9]{0,5}[0-9]{0,1}[^.][^,]" min={Number(data.weightMin)} title="Debe ser un Numero Entero y superior al Numero Min o igual" onChange={(e)=>handler(e)} required/><br/>
+            <input type="number" value={data.weightMax} name="weightMax" onChange={(e)=>handler(e)} className={error.weightMax?"InputError":""} required/><br/><br/>
+            {error.weight && <><label className="Error">{error.weight}</label><br/></>}
             <label for="life_span">Life Span minimun: </label>
-            <input type="number" value={data.life_spanMin} name="life_spanMin" id="life_spanMin" patter="^[1-9]{0,5}[0-9]{0,1}[^.][^,]" min="1" title="Debe ser un Numero Entero y no puede ser 0" onChange={(e)=>handler(e)} required/><br/>
+            <input type="number" value={data.life_spanMin} name="life_spanMin" id="life_spanMin" onChange={(e)=>handler(e)} className={error.life_spanMin?"InputError":""} required/><br/>
             <label for="life_span">Life Span maximun: </label>
-            <input type="number" value={data.life_spanMax} name="life_spanMax" id="life_spanMax" patter="^[1-9]{0,5}[0-9]{0,1}[^.][^,]" min={Number(data.life_spanMin)} title="Debe ser un Numero Entero y superior al Numero Min o igual" onChange={(e)=>handler(e)} required/><br/>
-            
-            <br/><br/>
+            <input type="number" value={data.life_spanMax} name="life_spanMax" id="life_spanMax" onChange={(e)=>handler(e)} className={error.life_spanMax?"InputError":""} required/><br/>
+            {error.life_span && <><label className="Error">{error.life_span}</label><br/></>}
+            <br/>
             {/* cambiar Bred for para seleccionar Bred for */}
             <label for="bred_for" >Bred For: </label>
             <select name="bred_for" id="bred_for" onChange={(e)=>handlerBreds(e)}>
@@ -221,7 +316,7 @@ export default function CreateDog(){
                   )                    
               })}
               </div>
-              <br/><br/>
+              <br/>
 
             <label for="breed_group">Breed Group: </label>
             <select name="temperaments" id="temperaments" onChange={(e)=>handlerBreedGroup(e)}>
@@ -260,7 +355,13 @@ export default function CreateDog(){
               <input type="text" name="inputCrearTemp" id="inputCrearTemp"/>
               <input type="button" onClick={()=>agregarTempBD()} value="Add Temperament"/><br/><br/>
               
-              {data &&
+              
+            { isNullUndefEmptyStr && <input type="submit" value="Create Dog" />}
+            <input type="reset" onClick={()=>{setData({}); setArrayT([]); setArrayB([]); setValueBG("")}} ></input>
+        </form>
+        </div>
+        <div className="CreateDogInfo">
+        {data &&
               <Dog
               perfil={true}
               id="999"
@@ -273,23 +374,12 @@ export default function CreateDog(){
               weight={`${data.weightMin} - ${data.weightMax}`}
               height={`${data.heightMin} - ${data.heightMax}`}
               />}
-            
-            <input type="submit" value="Create Dog" />
-            <input type="reset" onClick={()=>{setData({}); setArrayT([]); setArrayB([])}}></input>
-        </form>
         </div>
-
+        </div>
         </>
       }      
       </>
   )   
 }
 
-{/* <input list="browsers" name="browser">
-<datalist id="browsers">
-  <option value="Internet Explorer">
-  <option value="Firefox">
-  <option value="Chrome">
-  <option value="Opera">
-  <option value="Safari">
-</datalist> */}
+

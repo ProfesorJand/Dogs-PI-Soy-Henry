@@ -1,23 +1,17 @@
 import React from "react";
-import {Link} from "react-router-dom"
 import Rectangulos from "./Rectangulos";
 import "./css/Dog.css"
 
-export default function Dog({id, bred_for, breed_group, height, image, life_span, name, origin, reference_image_id, temperament, weight, country_code, perfil=false}){
-    console.log("life_span",life_span);
-    
-
+export default function Dog({id, bred_for, breed_group, height, image, life_span, name, origin, reference_image_id, temperament, weight, country_code, perfil=false}){   
     return (
         <>
-
             {
-                !id? <p key={id}>Cargandoaaaaaaaa</p>:
+
                 <>
                 
-            <div key={id} className={`Contenedor ${window.location.href === `/perfil/${encodeURI(name)}` ? "Perfil": encodeURI(name)}`} onClick={
+            <div key={id} className={`Contenedor ${window.location.href === `http://localhost:3000/perfil/${encodeURI(name)}` && "Perfil"}`} onClick={
                 () => {
-                    console.log(window.location.href)
-                    if (window.location.href !== `http://localhost:3001/perfil/${name}`){
+                    if (window.location.href !== `http://localhost:3000/perfil/${name}`){
                         return window.location.href=`/perfil/${name}`
                     }
                     }} > 
@@ -84,7 +78,7 @@ export default function Dog({id, bred_for, breed_group, height, image, life_span
                     <div className="breedGroup">
                     {bred_for.split(", ").map((t)=>{
                         return (
-                            <Rectangulos item={t}/>
+                            <Rectangulos item={t} key={"bred_for"+t}/>
                         )                    
                     })}
                     </div>
@@ -99,19 +93,13 @@ export default function Dog({id, bred_for, breed_group, height, image, life_span
                     <div className="breedGroup">
                     {breed_group.split(", ").map((t)=>{
                         return (
-                            <Rectangulos item={t}/>
+                            <Rectangulos item={t}  key={"breed_group"+t}/>
                         )                    
                     })}
                     </div>
                 </div>
                 </>
                 }
-                {/* <p>height_imperial: {height.imperial} - height_metric: {height.metric}</p> */}
-                {/* <p>Weight imperial: {weight.imperial}</p>
-                <p>Weight metric: {weight.metric}</p> */}
-                {/* {life_span ? <p>life_span: {life_span} </p> : <></>}
-                {origin ? <p>origin: {origin} </p> : <></>} */}
-                {/* <p>reference_image_id: {reference_image_id}</p> */}
                 </div>
                 {temperament ? 
                 
@@ -121,7 +109,7 @@ export default function Dog({id, bred_for, breed_group, height, image, life_span
                     <div className="temperamentList">
                     {temperament.split(", ").map((t)=>{
                         return (
-                            <Rectangulos item={t}/>
+                            <Rectangulos item={t}  key={"temperament"+t}/>
                         )                    
                     })}
                     </div>
@@ -130,7 +118,7 @@ export default function Dog({id, bred_for, breed_group, height, image, life_span
                 </>
 
                     : <></>}
-                {/* <p>country_code: {country_code ? country_code : "unknown"}</p> */}
+
                 </div>
             </div>
             
@@ -140,4 +128,3 @@ export default function Dog({id, bred_for, breed_group, height, image, life_span
         </>
     )
 }
-//height={image.height} width={image.width}

@@ -1,19 +1,18 @@
 import React from "react";
-import {Link} from "react-router-dom"
 import Dog from "./Dog.jsx";
 import "./css/Dogs.css";
 
 export default function Dogs({data}){
-    console.log(data)
+
     return (
         <>
         <div className="ContainerDogs">
         {data.length === 0 ? 
         <>
-       </>
+        <h2>No Dog Found</h2>
+        </>
         : 
-        data.map((d)=>{ return (
-            <>
+        data?.map((d)=>{ return (
             <Dog
                 key={d.id}
                 bred_for={d.bred_for ? d.bred_for : d.Bred_Fors ? d.Bred_Fors.map((b)=>b.name).join(", "): d.bred_for}
@@ -30,8 +29,9 @@ export default function Dogs({data}){
                 country_code={d.country_code}
 
                 />
-            </>)}
-        )}
+            )}
+        )
+        }
         </div>
         </>
     )
