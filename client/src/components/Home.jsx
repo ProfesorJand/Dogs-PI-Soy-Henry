@@ -1,20 +1,3 @@
-
-/*[ ] Input de búsqueda para encontrar razas de perros por nombre
-[ ] Área donde se verá el listado de razas de perros. Deberá mostrar su:
-Imagen
-Nombre
-Temperamento
-Peso
-[ ] Botones/Opciones para filtrar por:
-Temperamento
-Raza existente (es decir las que vienen de la API) o agregada por nosotros (creadas mediante el form)
-[ ] Botones/Opciones para ordenar tanto ascendentemente como descendentemente las razas de perro por:
-Orden alfabético
-Peso
-[ ] Paginado para ir buscando y mostrando las siguientes razas, mostrando 8 razas por página. 
-IMPORTANTE: Dentro de la Ruta Principal se deben mostrar tanto las razas de perros traidas desde la API como así también las de la base de datos,
-pero NO está permitido almacenar en la base de datos las razas de perros de la API sino que solamente se pueden guardar aquellas creadas desde el form. */
-
 import React, {useEffect, useState} from 'react';
 import Dogs from './Dogs.jsx';
 import FilterBreedGroup from './FilterBreedGroup';
@@ -42,16 +25,22 @@ export default function Home() {
     const [variableValue, setVariableValue] = useState("All")
     
     useEffect(()=>{
-        fetch('http://localhost:3001/dogs').then(r=>r.json()).then(all=>{setDogs([...all])}) //backend
+        
+        fetch('http://localhost:3001/dogs').then(r=>r.json()).then(all=>{
+            const sorteado = all.sort(function(a, b) {
+                var x = a.name; var y = b.name;
+                return ((x < y) ? -1 : (x > y) ? 1 : 0)});
+            setDogs([...sorteado])
+        })
         fetch('http://localhost:3001/temperaments').then(r=> r.json()).then(r=>setTemperamentos(r))
         fetch('http://localhost:3001/breed_group').then(r=> r.json()).then(r=>setRazas(r))
-        fetch('http://localhost:3001/temperaments').then(r=> r.json())
         
     },[])
 
     useEffect(()=>{
         setFilter(dogs);
         onFilter(breedName, true, 1, valueTemperament);
+
     },[dogs]);
 
     useEffect(()=>{
@@ -59,9 +48,9 @@ export default function Home() {
     },[currentPage]);
 
     useEffect(()=>{
-        setArrayPag([]) //restablecer el array para que se cree de nuevo
-        for(let i = 1; i <= totalPage; i++){ //2
-            setArrayPag((e)=>[...new Set([...e,i])]) //[1,2]
+        setArrayPag([]) 
+        for(let i = 1; i <= totalPage; i++){ 
+            setArrayPag((e)=>[...new Set([...e,i])]) 
         }
     },[totalPage]);
 
@@ -70,7 +59,7 @@ export default function Home() {
         onFilter(breedName, true, 1,valueTemperament, variableValue);
     },[variableValue])
 
-    function onFilter(breed = "all", buleano = false, pag = currentPage, filterTemperament = "all", variable = variableValue){ //option
+    function onFilter(breed = "all", buleano = false, pag = currentPage, filterTemperament = "all", variable = variableValue){ 
         
         setBreed(breed);
         setValueTemperament(filterTemperament);
@@ -149,7 +138,7 @@ export default function Home() {
 
     
 
-    function onOrder( arg, cambio , array = dogs ){ //arg = name //[{name: "nombre"}]
+    function onOrder( arg, cambio , array = dogs ){ 
         if(!arg){
             return 
         }
@@ -182,11 +171,19 @@ export default function Home() {
     return (
         <>
         
-        {dogs.length === 0 || temperamentos.length === 0 || razas.length === 0 || filter.length === 0?
-            
+        {dogs.length === 0 || temperamentos.length === 0 || razas.length === 0 ?
+        <>
+            <div className="ContainerFiltOrderPag">
+            <FilterApiDB variableValue={variableValue} setVariableValue={setVariableValue}/>
+            <FilterBreedGroup onFilter={onFilter} razas={razas} valueTemperament={valueTemperament}/>
+            <FilterTemperamentos onFilter={onFilter} temperamentos={temperamentos} breed={breedName}/>
+            <Order onOrder={onOrder} valueOrder={valueOrder}/>
+            <Pagination arrayPag={arrayPag} setCurrentPage={setCurrentPage} currentPage={currentPage} totalPage={totalPage}/>
+            </div>
             <div className='ContainerDogs'>
             <img src="https://cdn.dribbble.com/users/1782673/screenshots/4683964/ezgif.com-video-to-gif__2_.gif" alt="Cargando"/>
             </div>
+            </>
             :
             <>
             <div className="ContainerFiltOrderPag">

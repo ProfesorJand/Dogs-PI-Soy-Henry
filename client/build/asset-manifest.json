@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.4648c558.chunk.css",
-    "main.js": "/static/js/main.e00141f4.chunk.js",
-    "main.js.map": "/static/js/main.e00141f4.chunk.js.map",
+    "main.css": "/static/css/main.9cc8549b.chunk.css",
+    "main.js": "/static/js/main.2a0b9bf0.chunk.js",
+    "main.js.map": "/static/js/main.2a0b9bf0.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.c63e387d.js",
     "runtime-main.js.map": "/static/js/runtime-main.c63e387d.js.map",
     "static/js/2.4d4eb4c0.chunk.js": "/static/js/2.4d4eb4c0.chunk.js",
@@ -10,7 +10,7 @@
     "static/js/3.ffd3a41c.chunk.js": "/static/js/3.ffd3a41c.chunk.js",
     "static/js/3.ffd3a41c.chunk.js.map": "/static/js/3.ffd3a41c.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/main.4648c558.chunk.css.map": "/static/css/main.4648c558.chunk.css.map",
+    "static/css/main.9cc8549b.chunk.css.map": "/static/css/main.9cc8549b.chunk.css.map",
     "static/js/2.4d4eb4c0.chunk.js.LICENSE.txt": "/static/js/2.4d4eb4c0.chunk.js.LICENSE.txt",
     "static/media/logo.cde07528.png": "/static/media/logo.cde07528.png",
     "static/media/LandingPage.css": "/static/media/scooby-doo-gift.4d6c5068.gif"
@@ -18,7 +18,7 @@
   "entrypoints": [
     "static/js/runtime-main.c63e387d.js",
     "static/js/2.4d4eb4c0.chunk.js",
-    "static/css/main.4648c558.chunk.css",
-    "static/js/main.e00141f4.chunk.js"
+    "static/css/main.9cc8549b.chunk.css",
+    "static/js/main.2a0b9bf0.chunk.js"
   ]
 }

@@ -32,7 +32,8 @@ export default function PerfilDog({props}){
                         life_span:"Eternal?",
                         temperament:"Fun-loving, No Bite",
                         reference_image_id:"PerroMeme",
-                        image:"https://www.liveabout.com/thmb/9oyhVbEg1OHIPqxsUSe9Pif61U8=/640x640/filters:no_upscale():max_bytes(150000):strip_icc()/superdog-treadmill-5af44eb2eb97de003d8c771d.gif"
+                        image:"https://www.liveabout.com/thmb/9oyhVbEg1OHIPqxsUSe9Pif61U8=/640x640/filters:no_upscale():max_bytes(150000):strip_icc()/superdog-treadmill-5af44eb2eb97de003d8c771d.gif",
+                        classN:"fix"
                     }]))
         }catch(error){
             console.log("entro al catch")
@@ -83,7 +84,8 @@ export default function PerfilDog({props}){
                         temperament={result.temperament ? result.temperament : result.Temperaments ? result.Temperaments.map((t)=>t.name).join(", "): ""} 
                         name={result.name} 
                         image={result.image} 
-                        life_span={result.life_span}/>    
+                        life_span={result.life_span}
+                        classN ={result.classN}/>    
                 )
             })   
         }

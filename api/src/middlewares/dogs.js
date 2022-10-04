@@ -74,16 +74,12 @@ router.get('/',async(req,res)=>{ // localhost:3001/dogs
         if(razasNombreBD.length !== 0){
             return res.json(seleccion.concat(razasNombreBD))
         }
-        return res.json(seleccion) //retornar datos de la raza en formato json -> res.json([...raza,...dogs]) cuando hagamos la conexion a la base de datos
+        return res.json(seleccion) 
     } catch (err) {
         return res.send({error: err.message})
     }
     
 });
-
-router.get('razas', async (req,res)=>{
-    
-})
 
 router.get('/:idRaza',async (req,res)=>{
     //Obtener el detalle de una raza de perro en particular

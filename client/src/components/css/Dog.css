@@ -22,21 +22,6 @@
     cursor:default;
 }
 
-/* .ContenedorFondo{
-    
-  background-image: url("https://cdn2.thedogapi.com/images/BJa4kxc4X.jpg");
-  
- 
-  filter: blur(8px);
-  -webkit-filter: blur(8px);
-
-  height: 100%; 
-  
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-} */
-
 .Contenedor img{
     display: inline-block;
     position:relative ;
@@ -118,22 +103,31 @@ tbody td:nth-child(3), tbody td:nth-child(5){
     background-color: #438a55;
     color: white;
 }
-/* table tr:first-child th:nth-child(2) th:nth-child(3){
-    background-color: #04AA6D;
-    color: white;
-} */
 
-
-/* table, th, td{
-    border: 1px solid black;
-
-    padding: 2px;
-} */
 table{
     width: 95%;
     position: relative;
     margin:auto
 }
 
+.fix{
+    width: 30%;
+}
 
+.fixCreator{
+    width: auto;
+    cursor:default;
+}
+
+@media only screen and (max-width: 600px) {
+    .fix{
+        width: auto;
+    }
+    .Contenedor{
+        width: auto;
+    }
+    .CreateDogContainer{
+        flex-direction: column;
+    }
+  }
 

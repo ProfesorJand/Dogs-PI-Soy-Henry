@@ -15,7 +15,7 @@ export default function CreateDog(){
     const [valueBG, setValueBG] = useState("");
     const [arrayB, setArrayB] = useState([]);
     const [arrayT, setArrayT]= useState([]);
-    const [error, setError] = useState({});
+    const [error, setError] = useState({arrayBG:"error"});
     const isNullUndefEmptyStr = Object.values(error).every(value => {
       if (value === '') {
         return true;
@@ -154,6 +154,7 @@ export default function CreateDog(){
       if (!arrayB.includes(e.target.value)){
         setArrayB((r)=>[...r, e.target.value])
       }
+      return setError((err)=>({...err, arrayB:""}))
     }
 
     function elimarBreds(t){
@@ -162,13 +163,18 @@ export default function CreateDog(){
           return bred !== t
         })
       })
-      return setData((data)=>({...data, bred_for : arrayB.join(", ")}))
+      setData((data)=>({...data, bred_for : arrayB.join(", ")}))
+      if(arrayB.length===0){
+        return setError((err)=>({...err, arrayB:"This value cannot be Empty"}))
+      }
+
     }
 
     function handlerTemperaments(e){
       if (!arrayT.includes(e.target.value)){
         setArrayT((r)=>[...r, e.target.value]) 
       }
+      return setError((err)=>({...err, arrayT:""}))
     }
 
     function elimarTemperamento(t){
@@ -177,13 +183,17 @@ export default function CreateDog(){
           return tempe !== t
         })
       })  
-      return setData((data)=>({...data, temperaments : arrayT.join(", ")}))
+      setData((data)=>({...data, temperaments : arrayT.join(", ")}));
+      if(arrayT.length===0){
+        return setError((err)=>({...err, arrayT:"This value cannot be Empty"}))
+      }
     }
 
     function handlerBreedGroup(e){ 
       if (!valueBG.includes(e.target.value)){
         setValueBG(e.target.value)
       }
+      setError((err)=>({...err,arrayBG:""}))
     }
 
     function agregarBredBD(){
@@ -216,7 +226,7 @@ export default function CreateDog(){
     async function mandarInfo(){ 
       const isNullUndefEmptyStr = Object.values(error).every(value => {
         // 👇️ check for multiple conditions
-        if (value === null || value === undefined || value === '') {
+        if (value === '') {
           return true;
         }
         return false;
@@ -293,15 +303,16 @@ export default function CreateDog(){
             <label for="weight">Weight minimun: </label>
             <input type="number"value={data.weightMin} name="weightMin" onChange={(e)=>handler(e)} className={error.weightMin?"InputError":""} required/><br/>
             <label for="weight">Weight maximun: </label>
-            <input type="number" value={data.weightMax} name="weightMax" onChange={(e)=>handler(e)} className={error.weightMax?"InputError":""} required/><br/><br/>
+            <input type="number" value={data.weightMax} name="weightMax" onChange={(e)=>handler(e)} className={error.weightMax?"InputError":""} required/><br/>
             {error.weight && <><label className="Error">{error.weight}</label><br/></>}
+            <br/>
             <label for="life_span">Life Span minimun: </label>
             <input type="number" value={data.life_spanMin} name="life_spanMin" id="life_spanMin" onChange={(e)=>handler(e)} className={error.life_spanMin?"InputError":""} required/><br/>
             <label for="life_span">Life Span maximun: </label>
             <input type="number" value={data.life_spanMax} name="life_spanMax" id="life_spanMax" onChange={(e)=>handler(e)} className={error.life_spanMax?"InputError":""} required/><br/>
             {error.life_span && <><label className="Error">{error.life_span}</label><br/></>}
             <br/>
-            {/* cambiar Bred for para seleccionar Bred for */}
+
             <label for="bred_for" >Bred For: </label>
             <select name="bred_for" id="bred_for" onChange={(e)=>handlerBreds(e)}>
                 <option value="" disabled selected></option>
@@ -330,9 +341,8 @@ export default function CreateDog(){
               </select>
             <br/><br/>
 
-            {/* cambiar temperamentos para seleccionar temperamentos */}
+          
             <label for="temperaments">Temperament: </label>
-            {/* <input type="text" name="temperaments" id="temperaments" onChange={(e)=>handler(e)} autoComplete required/><br/> */}
             <select name="temperaments" id="temperaments" onChange={(e)=>handlerTemperaments(e)}>
                 <option value="" disabled selected></option>
                 {temperamentos?.map((e)=>{
@@ -376,6 +386,7 @@ export default function CreateDog(){
               breed_group={data.breed_group}
               weight={`${data.weightMin} - ${data.weightMax}`}
               height={`${data.heightMin} - ${data.heightMax}`}
+              classN={"fixCreator"}
               />}
         </div>
         </div>

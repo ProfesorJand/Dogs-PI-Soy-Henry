@@ -2,16 +2,16 @@ import React from "react";
 import Rectangulos from "./Rectangulos";
 import "./css/Dog.css"
 
-export default function Dog({id, bred_for, breed_group, height, image, life_span, name, origin, reference_image_id, temperament, weight, country_code, perfil=false}){   
+export default function Dog({id, bred_for, breed_group, height, image, life_span, name, origin, reference_image_id, temperament, weight, country_code, perfil=false, classN}){   
     return (
         <>
             {
 
                 <>
                 
-            <div key={id} className={`Contenedor ${window.location.href === `http://localhost:3000/perfil/${encodeURI(name)}` && "Perfil"}`} onClick={
+            <div key={id} className={`Contenedor ${window.location.href === `http://localhost:3000/perfil/${encodeURI(name)}` && "Perfil"} ${classN?classN:""}` } onClick={
                 () => {
-                    if (window.location.href !== `http://localhost:3000/perfil/${name}`){
+                    if (window.location.href !== `http://localhost:3000/perfil/${name}` && window.location.href !== `http://localhost:3000/createdog`){
                         return window.location.href=`/perfil/${name}`
                     }
                     }} > 
