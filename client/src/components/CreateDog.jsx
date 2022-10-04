@@ -8,6 +8,7 @@ import "./css/CreateDog.css"
 
 export default function CreateDog(){
     const [constante, setConstante] = useState("");
+    const [dogsNames, setDogsNames] = useState([])
     const [temperamentos, setTemperamentos] = useState([]);
     const [bred, setBred] = useState([]);
     const [breedGroup, setBreedGroup] = useState([]);
@@ -38,6 +39,7 @@ export default function CreateDog(){
     });
 
     useEffect(()=>{
+      fetch('http://localhost:3001/dogs').then(r=> r.json()).then(r=>r.map((x)=>x.name)).then(r=>setDogsNames(r))
       fetch('http://localhost:3001/temperaments').then(r=> r.json()).then(r=>setTemperamentos(r))
       fetch('http://localhost:3001/bred_for').then(r=> r.json()).then(r=>setBred(r))
       fetch('http://localhost:3001/breed_group').then(r=> r.json()).then(r=>setBreedGroup(r))
@@ -49,12 +51,10 @@ export default function CreateDog(){
 
     useEffect(()=>{
       setData((data)=>({...data, bred_for : arrayB.join(", ")}))
-      console.log("arrayB", arrayB)
     },[arrayB])
 
     useEffect(()=>{
       setData((data)=>({...data, breed_group : valueBG}))
-      console.log("arrayBG", valueBG)
     },[valueBG])
    
     function handler(e){
@@ -64,6 +64,9 @@ export default function CreateDog(){
       if(inputName === "name" ) {
         if(!(/[^0-9\.\,\"\?\!\;\:\#\$\%\&\(\)\*\+\-\/\<\>\=\@\[\]\\\^\_\{\}\|\~]/.test(inputValue)) || inputValue.length > 40){
           return setError((err)=>({...err, name:"Primera letra Mayuscula de cada palabra, maximo 40 caracteres, no utlizar caracteres especiales"}))
+        }
+        if(dogsNames.includes(inputValue)){
+          return setError((err)=>({...err, name:"Este nombre ya existe!!, porfavor cambiar el nombre"}))
         }
         const arr = inputValue.split(" ");
         for (var i = 0; i < arr.length; i++){
