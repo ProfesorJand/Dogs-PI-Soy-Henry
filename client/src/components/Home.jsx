@@ -4,11 +4,15 @@ import FilterBreedGroup from './FilterBreedGroup';
 import Order from './Order.jsx'
 import Pagination from './Paginations.jsx';
 import FilterTemperamentos from './FilterTemperament.jsx';
-import FilterApiDB from './FilterApiDB'
+import FilterApiDB from './FilterApiDB';
+// import {useDispatch, useSelector} from 'react-redux';
+// import {getBredFor} from '../actions/index.js';
+// import { useCallback } from 'react';
 import "./css/Home.css";
 
 
-export default function Home() {
+
+export default function Home(store) {
     const [dogs, setDogs] = useState([]); 
     const [razas, setRazas] = useState([]);
     const [temperamentos, setTemperamentos] = useState([]); 
@@ -22,8 +26,12 @@ export default function Home() {
     const [totalPage, setTotalPage] = useState(0); 
     const [maxShow, setMaxShow] = useState(8); 
     const [arrayPag, setArrayPag] = useState([]);
-    const [variableValue, setVariableValue] = useState("All")
-    
+    const [variableValue, setVariableValue] = useState("All");
+
+    // const dispatch = useDispatch();
+    // const varBredFor = useSelector((state)=>state.bred_for)
+
+
     useEffect(()=>{
         
         fetch('http://localhost:3001/dogs').then(r=>r.json()).then(all=>{
@@ -34,7 +42,7 @@ export default function Home() {
         })
         fetch('http://localhost:3001/temperaments').then(r=> r.json()).then(r=>setTemperamentos(r))
         fetch('http://localhost:3001/breed_group').then(r=> r.json()).then(r=>setRazas(r))
-        
+        // dispatch(getBredFor());
     },[])
 
     useEffect(()=>{
@@ -192,6 +200,15 @@ export default function Home() {
             <FilterTemperamentos onFilter={onFilter} temperamentos={temperamentos} breed={breedName}/>
             <Order onOrder={onOrder} valueOrder={valueOrder}/>
             <Pagination arrayPag={arrayPag} setCurrentPage={setCurrentPage} currentPage={currentPage} totalPage={totalPage}/>
+
+            {/* <select>
+                {
+                    varBredFor?.map((e)=>{
+                        return <option key={e.id} value={e.name}>{e.name}</option>
+                    })
+                }
+            </select> */}
+            
             </div>
             <Dogs data={filter}/>
             </>
