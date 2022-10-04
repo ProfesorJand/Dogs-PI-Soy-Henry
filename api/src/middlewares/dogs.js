@@ -27,8 +27,8 @@ router.get('/',async(req,res)=>{ // localhost:3001/dogs
     const name = req.query.name; // declaramos la query name 
     console.log("name :", name)
     
-    if(!name){ // verificamos si no hay query 
-        const razas = await fetch(ApiBreeds).then(r => r.json()) // buscar todas las razas en api
+    if(!name){ 
+        const razas = await fetch(ApiBreeds).then(r => r.json()) 
         const razas1 =
         razas.map((r)=>{
             const arreglo = {
@@ -43,20 +43,17 @@ router.get('/',async(req,res)=>{ // localhost:3001/dogs
                 weight : r.weight.metric,
                 image : r.image.url,
             }
-            // r.height = r.height.metric;
-            // r.weight = r.weight.metric;
-            // r.image = r.image.url;
             return arreglo
         })
         console.log(razas1[0].id)
         const razasBD = await Dog.findAll({include:[Temperament, Bred_For, Breed_Group]})
-        return res.json(razas1.concat(razasBD)) // retornar datos de todas las razas en formato json
+        return res.json(razas1.concat(razasBD)) 
     }
     //const ApiBreedsName = `https://api.thedogapi.com/v1/breeds/search?q=${encodeURI(name)}&`+process.env.API_KEY; //ruta de api x nombre de la raza
     const ApiBreedsName = ApiBreeds;
     
     try {
-        const raza = await fetch(ApiBreedsName).then(r => r.json()) // busco raza por nombre
+        const raza = await fetch(ApiBreedsName).then(r => r.json()) 
         const seleccion = raza.filter((r)=>r.name.includes(name))
         seleccion.map((r)=>{
             var url = "https://cdn2.thedogapi.com/images/"+r.reference_image_id+".jpg";
@@ -71,8 +68,8 @@ router.get('/',async(req,res)=>{ // localhost:3001/dogs
         
         const razasNombreBD = await Dog.findAll({where:{name:{[Op.startsWith]: name}}, include: [Temperament, Bred_For, Breed_Group]});
 
-        if(seleccion.length === 0 && razasNombreBD.length === 0) { //en caso de no existir dicha raza tirar error
-            throw new Error('Raza no encontrada') // mensaje del error
+        if(seleccion.length === 0 && razasNombreBD.length === 0) { 
+            throw new Error('Raza no encontrada') 
         }
         if(razasNombreBD.length !== 0){
             return res.json(seleccion.concat(razasNombreBD))
@@ -83,6 +80,10 @@ router.get('/',async(req,res)=>{ // localhost:3001/dogs
     }
     
 });
+
+router.get('razas', async (req,res)=>{
+    
+})
 
 router.get('/:idRaza',async (req,res)=>{
     //Obtener el detalle de una raza de perro en particular

@@ -23,8 +23,6 @@ router.get('/',async(req,res)=>{
         
         var ArrayDataBreedGroups = [];
 
-        //Obtener todos los temperamentos posibles
-        //En una primera instancia deberán obtenerlos desde la API externa y guardarlos en su propia base de datos y luego ya utilizarlos desde allí
         const razas = await fetch(ApiBreeds).then(r => r.json())
         
         const breed_group = razas.map((r) => {
@@ -34,11 +32,11 @@ router.get('/',async(req,res)=>{
             }
         } )
         
-        const results = breed_group.filter(Boolean); //remover nulls
-        let arrayBreedGroup = [...new Set(Array.prototype.concat.apply([], results))]; // remover duplicados
-        ArrayDataBreedGroups = arrayBreedGroup.sort(); //almacenarlos en un array
+        const results = breed_group.filter(Boolean);
+        let arrayBreedGroup = [...new Set(Array.prototype.concat.apply([], results))]; 
+        ArrayDataBreedGroups = arrayBreedGroup.sort(); 
         const ArrayObjBreedGroup = ArrayDataBreedGroups.map((e)=>{
-            return { id: h++, name: e} // establecerlos con los mismos nombres que estan en el modelo Temperament
+            return { id: h++, name: e}
         })
         
         const crearBreedGroup = await Breed_Group.bulkCreate(ArrayObjBreedGroup)
@@ -46,7 +44,6 @@ router.get('/',async(req,res)=>{
            
             return res.json(crearBreedGroup)
         } 
-        // throw new Error("Hubo un error en creacion de algun registro a la base de datos")
         
     } catch (error) {
         res.send(breed_groups)
